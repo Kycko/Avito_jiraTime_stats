@@ -8,7 +8,6 @@ function TBL_get_fullRange(table) {
 function TBL_cut_toTitle(table) {
     // убирает первые строки до заголовков (Project и т. д.)
     while (table[0][0] !== 'Project') {table.shift()}
-    return table;
 }
 
 // преобразование всей таблицы
@@ -28,7 +27,10 @@ function TBL_toStrings(table, range=null) {
     if (range === null) {range = TBL_get_fullRange(table)}
     for (let r=range.r; r < range.r+range.h; r++) {
         for (let c=range.c; c < range.c+range.w; c++) {
-            table[r][c] = table[r][c].toString().trim().replaceAll('​', '');
+            if (typeof(table[r][c]) === 'string') {
+                table[r][c] = table[r][c].toString().trim().replaceAll('​', '');
+            }
+            else {table[r][c] = ''} // там объекты-картинки, надо убрать, чтобы не было потом проблем
         }
     }
 }
@@ -47,6 +49,15 @@ function TBL_filterTitles(table, titles) {
     let   final = [];
     let indexes = LIST_indx_strList(table[0], titles, false);
     table       = TBLrotate(table);
-    for (let i of indexes) {Logger.log(table[i]);final.push(table[i]);}
+    for (let i of indexes) {final.push(table[i]);}
     return TBLrotate(final);
+}
+function TBL_rm_strValues(table, values, ignore_firstRows=0, fullText=true, lower=true) {
+    // values – это список[]
+    for (let val of values) {
+        for (let r=ignore_firstRows; r < table.length; r++) {
+            let indexes = LIST_indxStr(table[r], val, fullText, lower);
+            for (let c of indexes) {table[r][c] = ''}
+        }
+    }
 }

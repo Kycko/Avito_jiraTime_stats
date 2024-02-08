@@ -39,7 +39,7 @@ function LIST_rmIndexes(list, indexes) {
     return list;
 }
 function LIST_rm_strValues(list, values, fullText=true, lower=true) {
-    // values – это список
+    // values – это список[]
     let rmList = LIST_indx_strList(list, values, true, fullText, lower);
     return LIST_rmIndexes(list, rmList);
 }

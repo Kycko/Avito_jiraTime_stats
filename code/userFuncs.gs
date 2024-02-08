@@ -5,10 +5,7 @@
  * @customfunction
  */
 function filterReport_and_countTime(reportSheet, filterCols) {
-    // получаем все данные
-    TBL_toStrings(filterCols);
-    filterCols = LIST_rm_strValues(TBL_toList       (filterCols), [''], true, false);
-    let  table = TBL_cut_toTitle  (SH_read_fullSheet(reportSheet));
-    table      = TBL_filterTitles (table, filterCols);
-    return table;
+    let   RV = SPEC_initRV     (reportSheet, filterCols);   // RV = root values
+    RV.table = TBL_filterTitles(RV.table, RV.filterCols);
+    return RV.table;
 }
