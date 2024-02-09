@@ -6,7 +6,7 @@
  */
 function filterReport_and_countTime(report, columns) {
     let RV = SPEC_initRV({table: report, columns: columns});    // RV = root values
-    DICT_filterKeys     (RV.report,      RV.filter);
-    SPEC_times_toHours  (RV);
+    DICT_filterKeys(RV.report, RV.filter);
+    SPEC_fixTimes  (RV);
     return SPEC_report_toTable(RV);
 }

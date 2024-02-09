@@ -34,6 +34,19 @@ function SPEC_readReport(table) {
     return final;
 }
 
+// основные преобразования
+function SPEC_fixTimes(RV) {
+    let     toFix = Object.keys(RV.times);
+    for (let key of Object.keys(RV.report)) {
+        if (toFix.includes(key)) {SPEC_fixTimes_inColumn(RV, key)}
+    }
+}
+function SPEC_fixTimes_inColumn(RV, key) {
+    for (let i=0; i < RV[key].length; i++) {
+        if (RV[key][i].length) {RV[key][i] = STR_transformTime(RV[key][i])}
+    }
+}
+
 // преобрабование разных типов
 function SPEC_report_toTable(RV) {
     let final = [];
