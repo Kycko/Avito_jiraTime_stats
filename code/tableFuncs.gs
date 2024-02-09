@@ -1,3 +1,16 @@
+/* 
+function TBL_toList(table) {
+    // преобразует всю таблицу в список[] её элементов
+    let final = [];
+    for (let row of table) {
+        for (let cell of row) {
+            final.push(cell);
+        }
+    }
+    return final;
+}
+ */
+
 // получение свойств
 function TBL_get_fullRange(table) {
     return {
@@ -34,15 +47,13 @@ function TBL_toStrings(table, range=null) {
         }
     }
 }
-function TBL_toList(table) {
-    // преобразует всю таблицу в список[] её элементов
-    let final = [];
-    for (let row of table) {
-        for (let cell of row) {
-            final.push(cell);
-        }
+function TBL_cut_emptyRows(table) {
+    // удаляет СНИЗУ все пустые строки
+    let r = table.length-1;
+    while (LIST_checkStr_allEqual(table[r], '', true, false)) {
+        table.pop();
+        r--;
     }
-    return final;
 }
 function TBL_filterTitles(table, titles) {
     // возвращает таблицу только со столбцами из titles[] и в порядке, указанном в titles[]
