@@ -9,6 +9,14 @@ function TBL_toList(table) {
     }
     return final;
 }
+function TBL_filterTitles(table, titles) {
+    // возвращает таблицу только со столбцами из titles[] и в порядке, указанном в titles[]
+    let   final = [];
+    let indexes = LIST_indx_strList(table[0], titles, false);
+    table       = TBLrotate(table);
+    for (let i of indexes) {final.push(table[i]);}
+    return TBLrotate(final);
+}
  */
 
 // получение свойств
@@ -54,14 +62,6 @@ function TBL_cut_emptyRows(table) {
         table.pop();
         r--;
     }
-}
-function TBL_filterTitles(table, titles) {
-    // возвращает таблицу только со столбцами из titles[] и в порядке, указанном в titles[]
-    let   final = [];
-    let indexes = LIST_indx_strList(table[0], titles, false);
-    table       = TBLrotate(table);
-    for (let i of indexes) {final.push(table[i]);}
-    return TBLrotate(final);
 }
 function TBL_rm_strValues(table, values, ignore_firstRows=0, fullText=true, lower=true) {
     // values – это список[]

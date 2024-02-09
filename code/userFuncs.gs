@@ -5,8 +5,8 @@
  * @customfunction
  */
 function filterReport_and_countTime(report, columns) {
-    let   RV = {table: report, columns: columns};   // RV = root values
-    SPEC_initRV(RV);
-    RV.table = TBL_filterTitles(RV.table, RV.filter);
-    return RV.table;
+    let RV = SPEC_initRV({table: report, columns: columns});    // RV = root values
+    DICT_filterKeys     (RV.report,      RV.filter);
+    SPEC_times_toHours  (RV);
+    return SPEC_report_toTable(RV);
 }
