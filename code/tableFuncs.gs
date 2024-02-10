@@ -68,3 +68,20 @@ function TBL_rm_strValues(table, values, ignore_firstRows=0, fullText=true, lowe
         }
     }
 }
+
+// фильтр
+function TBLfilter_with_titleName(table, title, values, TFT=true, TL=false, VFT=true, VL=false) {
+    // находит в таблице столбец с заголовком title
+    // и удаляет все строки, у которых в этом столбце не то, что указано в списке values[]
+    // T для title, V для values / FT = full text, L = lower
+    let col = LIST_indxStr(table[0], title, TFT, TL);
+    if (col.length) {
+        let final = [table[0]];
+        col       = col   [0];
+        for (let r=1; r < table.length; r++) {
+            if (values.includes(table[r][col])) {final.push(table[r])}
+        }
+        return final;
+    }
+    else {return table}
+}

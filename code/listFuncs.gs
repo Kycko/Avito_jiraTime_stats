@@ -18,6 +18,14 @@ function LIST_rm_strValues(list, values, fullText=true, lower=true) {
     let rmList = LIST_indx_strList(list, values, true, fullText, lower);
     return LIST_rmIndexes(list, rmList);
 }
+function LISTcount(list, values, ignore=false) {
+    // если ignore=true, считает всё КРОМЕ values[], иначе считает только всё из списка values[]
+    let final = 0;
+    for (let item of list) {
+        if (ignore !== values.includes(item)) {final++}
+    }
+    return final;
+}
 */
 
 // поиск
@@ -51,6 +59,19 @@ function LIST_checkStr_allEqual(list, value, fullText=true, lower=true) {
         if (!STR_findSub(item, value, 'bool', fullText, lower)) {return false}
     }
     return true;
+}
+function LISTcount(list) {
+    let     sum = 0;
+    let counter = 0;
+    let     max = 0;
+    for (let val of list) {
+        if (typeof val === 'number') {
+            counter++;
+            sum += val;
+            if (val > max) {max = val}
+        }
+    }
+    return [[counter, sum/counter, max]];
 }
 
 // изменение

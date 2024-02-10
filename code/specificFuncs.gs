@@ -54,7 +54,7 @@ function SPEC_fixTimes_inColumn(RV, key) {
             let initSLA = get_typeTime    (RV,  key, RV.report['Component/s'][i]);
             if (negative) {curCol[i] += initSLA}
             else          {curCol[i]  = initSLA - curCol[i]}
-            curCol[i] = curCol[i].toFixed(2);
+            curCol[i] = Number(curCol[i].toFixed(2));
         }
     }
 }
