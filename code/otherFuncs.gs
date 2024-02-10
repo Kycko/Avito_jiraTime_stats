@@ -4,3 +4,12 @@ function getIB(type, index) {
     if (type === 'index') {return index}
     else                  {return index >= 0}
 }
+
+function get_typeTime(RV, type, subType) {
+    let obj = RV.typeTimes[type];
+    if (typeof obj === 'number') {return obj}
+    else {
+        if (Object.keys(obj).includes(subType)) {return obj[subType]}
+        else                                    {return obj['ВСЁ ОСТАЛЬНОЕ']}
+    }
+}

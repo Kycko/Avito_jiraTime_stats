@@ -1,10 +1,8 @@
 // чтение изначальных данных
 function SPEC_initRV(dict, MoWe, title) {
     // получает словарь {table:, columns:} и MoWe, приводит эти данные в нужный вид
-    for (let val of Object.values(dict)) {
-        TBL_toStrings    (val);
-        TBL_cut_emptyRows(val);
-    }
+    for (let val of Object.values(dict)) {TBL_cut_emptyRows(val)}
+    TBL_toStrings(dict.table);
     return {
         report    : SPEC_readReport(dict.table, title),
         filter    : LIST_rmDoubles (TBLrotate(dict.columns)[0]),
@@ -39,12 +37,25 @@ function SPEC_readReport(table, title) {
 function SPEC_fixTimes(RV) {
     let     toFix = Object.keys(RV.typeTimes);
     for (let key of Object.keys(RV.report)) {
-        if (toFix.includes(key)) {SPEC_fixTimes_inColumn(RV, RV.report[key])}
+        if (toFix.includes(key)) {SPEC_fixTimes_inColumn(RV, key)}
     }
 }
-function SPEC_fixTimes_inColumn(RV, column) {
-    for (let i=0; i < column.length; i++) {
-        if (column[i].length) {column[i] = STR_transformTime(RV.hours, column[i])}
+function SPEC_fixTimes_inColumn(RV, key) {
+    let curCol = RV.report[key];
+    for (let i=0; i < curCol.length; i++) {
+        if (curCol[i].length) {
+            let negative = false;
+            if (curCol[i][0] === '-') {
+                negative  = true;
+                curCol[i] = curCol[i].slice(1); // удаляет первый символ
+            }
+
+            curCol[i]   = STR_time_toHours(RV.hours, curCol[i]);
+            let initSLA = get_typeTime    (RV,  key, RV.report['Component/s'][i]);
+            if (negative) {curCol[i] += initSLA}
+            else          {curCol[i]  = initSLA - curCol[i]}
+            curCol[i] = curCol[i].toFixed(2);
+        }
     }
 }
 

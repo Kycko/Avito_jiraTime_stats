@@ -23,20 +23,10 @@ function STR_getTime_byType(timeStr, RVhours) {
     }
     return null;    // если все типы описаны в RVhours{}, это строка не должна работать
 }
-function STR_transformTime(RVhours, timeStr) {
+function STR_time_toHours(RVhours, timeStr) {
     // принимает изначальную строку из Jira, возвращает цифру – количество часов
-    let negative = false;
-    if (timeStr[0] === '-') {
-        negative = true;
-        timeStr  = timeStr.slice(1);    // удаляет первый символ
-    }
-
     let list = timeStr.split(' ');
     let  sum = 0;
-    for (let item of list) {
-        sum += STR_getTime_byType(item, RVhours);
-        
-    }
-
-    return sum.toFixed(2);
+    for (let item of list) {sum += STR_getTime_byType(item, RVhours)}
+    return sum;
 }
