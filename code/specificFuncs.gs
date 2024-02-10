@@ -1,14 +1,15 @@
 // чтение изначальных данных
-function SPEC_initRV(dict) {
-    // получает словарь {table:, columns:} и приводит эти данные в нужный вид
+function SPEC_initRV(dict, MoWe) {
+    // получает словарь {table:, columns:} и MoWe, приводит эти данные в нужный вид
     for (let val of Object.values(dict)) {
         TBL_toStrings    (val);
         TBL_cut_emptyRows(val);
     }
     return {
-        report : SPEC_readReport(dict.table),
-        filter : LIST_rmDoubles (TBLrotate(dict.columns)[0]),
-        times  : SPEC_readTimes (dict.columns)
+        report    : SPEC_readReport(dict.table),
+        filter    : LIST_rmDoubles (TBLrotate(dict.columns)[0]),
+        typeTimes : SPEC_readTimes (dict.columns),
+        hours     : Ghours         (MoWe)
     }
 }
 function SPEC_readTimes(table) {
@@ -36,14 +37,14 @@ function SPEC_readReport(table) {
 
 // основные преобразования
 function SPEC_fixTimes(RV) {
-    let     toFix = Object.keys(RV.times);
+    let     toFix = Object.keys(RV.typeTimes);
     for (let key of Object.keys(RV.report)) {
-        if (toFix.includes(key)) {SPEC_fixTimes_inColumn(RV, key)}
+        if (toFix.includes(key)) {SPEC_fixTimes_inColumn(RV, RV.report[key])}
     }
 }
-function SPEC_fixTimes_inColumn(RV, key) {
-    for (let i=0; i < RV[key].length; i++) {
-        if (RV[key][i].length) {RV[key][i] = STR_transformTime(RV[key][i])}
+function SPEC_fixTimes_inColumn(RV, column) {
+    for (let i=0; i < column.length; i++) {
+        if (column[i].length) {column[i] = STR_transformTime(RV.hours, column[i])}
     }
 }
 

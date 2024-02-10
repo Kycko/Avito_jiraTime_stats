@@ -1,10 +1,12 @@
-function G_timeTypes() {
+function Ghours(MoWe) {
     return {
-        min : 60,   // минуты, делим на это
-        mo  : 741,  // месяцы, умножаем
-        w   : 168,  // недели, умножаем
-        d   : 24,   // дни,    умножаем
-        h   : 1,    // часы,   умножаем
-        m   : 60    // минуты, делим на это
+        // будет записано в RV.hours
+        // div указывает, надо ли делить на это число (иначе будем умножать)
+        min : {hours: 60,              div: true},  // минуты
+        mo  : {hours: Number(MoWe[2]), div: false}, // месяцы
+        w   : {hours: Number(MoWe[0]), div: false}, // недели
+        d   : {hours: 9,               div: false}, // дни
+        h   : {hours: 1,               div: false}, // часы
+        m   : {hours: 60,              div: true}   // минуты
     }
 }

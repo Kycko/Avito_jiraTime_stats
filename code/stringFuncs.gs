@@ -13,18 +13,17 @@ function STR_findSub(string, sub, type='index', fullText=false, lower=true) {
 }
 
 // узконаправленные
-function STR_getTime_byType(timeStr) {
-    let types = G_timeTypes();
-    for (let key of Object.keys(types)) {
+function STR_getTime_byType(timeStr, RVhours) {
+    for (let key of Object.keys(RVhours)) {
         if (timeStr.includes(key)) {
             let time = Number(timeStr.replace(key, ''));
-            if (['m', 'min'].includes(key)) {return time/types[key]}
-            else                            {return time*types[key]}
+            if (RVhours[key].div) {return time/RVhours[key].hours}
+            else                  {return time*RVhours[key].hours}
         }
     }
-    return null;    // если все типы описаны в G_timeTypes(), это строка не должна работать
+    return null;    // если все типы описаны в RVhours{}, это строка не должна работать
 }
-function STR_transformTime(timeStr) {
+function STR_transformTime(RVhours, timeStr) {
     // принимает изначальную строку из Jira, возвращает цифру – количество часов
     let negative = false;
     if (timeStr[0] === '-') {
@@ -35,7 +34,9 @@ function STR_transformTime(timeStr) {
     let list = timeStr.split(' ');
     let  sum = 0;
     for (let item of list) {
-        sum += STR_getTime_byType(item);
+        sum += STR_getTime_byType(item, RVhours);
         
     }
+
+    return sum.toFixed(2);
 }
