@@ -1,12 +1,12 @@
 // чтение изначальных данных
-function SPEC_initRV(dict, MoWe) {
+function SPEC_initRV(dict, MoWe, title) {
     // получает словарь {table:, columns:} и MoWe, приводит эти данные в нужный вид
     for (let val of Object.values(dict)) {
         TBL_toStrings    (val);
         TBL_cut_emptyRows(val);
     }
     return {
-        report    : SPEC_readReport(dict.table),
+        report    : SPEC_readReport(dict.table, title),
         filter    : LIST_rmDoubles (TBLrotate(dict.columns)[0]),
         typeTimes : SPEC_readTimes (dict.columns),
         hours     : Ghours         (MoWe)
@@ -25,8 +25,8 @@ function SPEC_readTimes(table) {
     }
     return final;
 }
-function SPEC_readReport(table) {
-    TBL_cut_toTitle  (table);
+function SPEC_readReport(table, title) {
+    table.splice     (0, title-1);
     TBL_rm_strValues (table, ['CellImage'], 1, true, false);
     table = TBLrotate(table);
 

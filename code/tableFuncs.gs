@@ -26,10 +26,6 @@ function TBL_get_fullRange(table) {
         h: table.length, w: table[0].length
     }
 }
-function TBL_cut_toTitle(table) {
-    // убирает первые строки до заголовков (Project и т. д.)
-    while (table[0][0] !== 'Project') {table.shift()}
-}
 
 // преобразование всей таблицы
 function TBLrotate(old) {
