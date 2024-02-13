@@ -1,14 +1,24 @@
 // чтение изначальных данных
-function SPEC_initRV(dict, MoWe, title) {
-    // получает словарь {table:, columns:} и MoWe, приводит эти данные в нужный вид
+function SPEC_initRV(dict, MoWe, title, dates) {
+    // получает словарь {table:, columns:} и остальное, приводит эти данные в нужный вид
     for (let val of Object.values(dict)) {TBL_cut_emptyRows(val)}
     TBL_toStrings(dict.table);
+    let Rcols = TBLrotate(dict.columns);    // rotated columns
+
     return {
-        report    : SPEC_readReport(dict.table, title),
-        filter    : LIST_rmDoubles (TBLrotate(dict.columns)[0]),
-        typeTimes : SPEC_readTimes (dict.columns),
-        hours     : Ghours         (MoWe)
+        report    : SPEC_readReport     (dict.table, title),
+        filter    : LIST_rmDoubles      (Rcols[0]),
+        dates     : SPEC_init_dateFilter(dates),
+        dateTypes : LIST_vlookupStr     (Rcols[0], Rcols[3], ['date'], true, false),
+        typeTimes : SPEC_readTimes      (dict.columns),
+        hours     : Ghours              (MoWe)
     }
+}
+function SPEC_init_dateFilter(dates) {
+    let final = {from: null, to: null, col: dates[1][0]}
+    if (dates[0][0] !== '') {final.from   = dates[0][0]}    // может быть не строкой
+    if (dates[0][1] !== '') {final.to     = dates[0][1]}    // может быть не строкой
+    return final;
 }
 function SPEC_readTimes(table) {
     let final = {};
@@ -31,6 +41,30 @@ function SPEC_readReport(table, title) {
     let final = {};
     for (let row of table) {final[row.shift()] = row}
     return final;
+}
+
+// фильтр
+function SPEC_filterDates(RV) {
+    let D = RV.dates;
+    if (!          RV.dateTypes.includes(D.col)) {return}
+    if (!Object.keys(RV.report).includes(D.col)) {return}
+    if (D.from === null && D.to === null)        {return}
+
+    let  column = RV.report[D.col];
+    let getRows = [];   // номера строк, которые оставим
+    for (let i=0; i < column.length; i++) {
+        if (column[i].length) {
+            let   first = true;
+            let    last = true;
+            let curDate = STR_parse_jiraDate(column[i]);
+
+            if (D.from !== null) {first = curDate >= D.from}
+            if (D.to   !== null) {last  = curDate <= D.to}
+            if (first && last) {getRows.push(i)}
+        }
+    }
+
+    DICT_filterRows_byIndexes(RV.report, getRows);
 }
 
 // основные преобразования

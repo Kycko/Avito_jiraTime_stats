@@ -10,3 +10,6 @@ function Ghours(MoWe) {
         m   : {hours: 60,              div: true}   // минуты
     }
 }
+function Gmonths() {
+    return ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+}

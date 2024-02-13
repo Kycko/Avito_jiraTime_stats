@@ -3,16 +3,6 @@
 если fullText=false, возвращают ячейку, в которой только часть текста = txt
 если lower=true, все строки будут сравниваться через .toLowerCase()
 
-function LIST_sortNumeric(list, ascending=true) {
-    // ascending – это 'по возрастанию'; если оно = false, будет сортировка по убыванию
-    if (ascending) {return list.toSorted((a, b) => a - b)}
-    else           {return list.toSorted((a, b) => b - a)}
-}
-function LIST_rmIndexes(list, indexes) {
-    indexes = LIST_sortNumeric(indexes);
-    for (let i = indexes.length-1; i >= 0; i--) {list.splice(indexes[i], 1)}
-    return list;
-}
 function LIST_rm_strValues(list, values, fullText=true, lower=true) {
     // values – это список[]
     let rmList = LIST_indx_strList(list, values, true, fullText, lower);
@@ -50,6 +40,16 @@ function LIST_indx_strList(list, values, multi=true, fullText=true, lower=true) 
     }
     return final;
 }
+function LIST_vlookupStr(main, toSearch, values, multi=true, fullText=true, lower=true) {
+    // ВПР, находит все values[] в toSearch[] и возвращает соответствующие элементы из main[]
+    // если multi=false, добавляет только один индекс для каждого value, а иначе все найденные
+    let indexes = LIST_indx_strList(toSearch, values, multi, fullText, lower);
+    let   final = [];
+    for (let i of indexes) {
+        if (i >= 0) {final.push(main[i])}
+    }
+    return final;
+}
 
 // проверки
 function LIST_checkStr_allEqual(list, value, fullText=true, lower=true) {
@@ -75,6 +75,15 @@ function LISTcount(list) {
 }
 
 // изменение
+function LIST_sortNumeric(list, ascending=true) {
+    // ascending – это 'по возрастанию'; если оно = false, будет сортировка по убыванию
+    if (ascending) {return list.toSorted((a, b) => a - b)}
+    else           {return list.toSorted((a, b) => b - a)}
+}
+function LIST_rmIndexes(list, indexes) {
+    indexes = LIST_sortNumeric(indexes);
+    for (let i = indexes.length-1; i >= 0; i--) {list.splice(indexes[i], 1)}
+}
 function LIST_rmDoubles(oldList) {
     let newList = [];
     for (let item of oldList) {

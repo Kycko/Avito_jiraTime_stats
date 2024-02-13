@@ -4,12 +4,14 @@
  * @param {stringsRange} columns Названия столбцов, которые оставим + времена обработки задач.
  * @param {stringsRange} MoWe    Количество раб. часов в одной неделе и в одном месяце (month & week).
  * @param {integer}      title   Номер строки заголовков отчёта.
+ * @param {dates}        dates   Две даты и название столбца, по которому фильтровать.
  * @customfunction
  */
-function filterReport_and_countTime(report, columns, MoWe, title) {
-    let RV = SPEC_initRV({table: report, columns: columns}, MoWe, title);   // RV = root values
-    DICT_filterKeys(RV.report, RV.filter);
-    SPEC_fixTimes  (RV);
+function filterReport_and_countTime(report, columns, MoWe, title, dates) {
+    let RV = SPEC_initRV({table: report, columns: columns}, MoWe, title, dates);    // RV = root values
+    DICT_filterKeys (RV.report, RV.filter);
+    SPEC_filterDates(RV);
+    SPEC_fixTimes   (RV);
     return SPEC_report_toTable(RV);
 }
 

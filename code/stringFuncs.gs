@@ -30,3 +30,13 @@ function STR_time_toHours(RVhours, timeStr) {
     for (let item of list) {sum += STR_getTime_byType(item, RVhours)}
     return sum;
 }
+function STR_parse_jiraDate(string) {
+    let list  = string .split('/');     // получаем ['dd', 'mm', 'yy TIME']
+    list[2]   = list[2].split(' ')[0];  // получаем ['dd', 'mm', 'yy']
+
+    let   day = Number(list[0]);
+    let month = LIST_indxStr(Gmonths(), list[1], true, false);
+    let  year = Number('20' + list[2]);
+
+    return new Date(year, month, day);
+}
